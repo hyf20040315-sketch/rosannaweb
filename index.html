@@ -1,0 +1,2144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rosanna He</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --text: #000000;
+      --text-muted: #333333;
+      --accent: #D1614C;
+      --radius: 32px;
+      --font-serif: 'Crimson Text', Georgia, 'Times New Roman', serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+      --nav-h: 56px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .deco { display: none; }
+    .deco-star { font-size: 24px; animation: twinkle 2s ease-in-out infinite; }
+    .deco-star:nth-child(2) { animation-delay: 0.5s; color: #D4A574; }
+    .deco-star:nth-child(3) { animation-delay: 1s; color: #E8C9A0; }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+    .deco-cloud { font-size: 36px; color: #C9A86C; animation: float 6s ease-in-out infinite; }
+    .deco-cloud.d2 { animation-delay: 2s; animation-duration: 8s; color: #E2C89B; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-8px) translateX(5px); }
+    }
+
+    /* ----- Nav (minimal, fixed) ----- */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1rem clamp(1.5rem, 4vw, 3rem);
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .nav-logo .nav-face { font-weight: 400; opacity: 0.85; }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-links a {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: lowercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--accent); }
+
+    /* ----- Hero: 文字雨 + 垂直网格 ----- */
+    .hero-rain {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--nav-h) + 4rem) 1.5rem 4rem;
+      background: #FFFFFF;
+      overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 15vh;
+      pointer-events: none;
+      transform-origin: 50% 0;
+      transition: transform 0.35s ease-out;
+    }
+    .hero-vline {
+      width: 1px;
+      flex: 0 0 auto;
+      height: 70vh;
+      max-height: 560px;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.12) 20%, rgba(0,0,0,0.12) 80%, transparent 100%);
+      margin: 0 clamp(0px, 0.9vw, 12px);
+    }
+    .hero-matrix {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1.5rem, 4vh, 2.5rem);
+    }
+    .hero-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 0;
+    }
+    .hero-cell {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: clamp(200px, 28vh, 320px);
+      padding: 0 clamp(2px, 0.5vw, 10px);
+    }
+    .hero-cell::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 100%;
+      background: rgba(0,0,0,0.1);
+      z-index: 0;
+    }
+    .hero-letter {
+      position: relative;
+      z-index: 1;
+      font-family: var(--font-serif);
+      font-size: clamp(1.75rem, 4.5vw, 3rem);
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1;
+      opacity: 0;
+      transform: translateY(-120vh) rotate(var(--rot-start, -12deg));
+      animation: letterDrop var(--dur, 1.4s) cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: var(--delay, 0s);
+    }
+    @keyframes letterDrop {
+      0% { opacity: 0; transform: translateY(-120vh) rotate(var(--rot-start, -10deg)); }
+      65% { opacity: 1; transform: translateY(var(--bounce, 10px)) rotate(var(--rot-mid, 3deg)); }
+      82% { transform: translateY(calc(var(--y-off, 0px) - 4px)) rotate(calc(var(--rot-end, 0deg) - 1deg)); }
+      100% { opacity: 1; transform: translateY(var(--y-off, 0px)) rotate(var(--rot-end, 0deg)); }
+    }
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      text-decoration: none;
+      animation: heroHintBounce 2.2s ease-in-out infinite;
+    }
+    @keyframes heroHintBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ----- Section common ----- */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1.5rem, 4vw, 3rem);
+      max-width: 1100px;
+      margin: 0 auto;
+      scroll-margin-top: calc(var(--nav-h) + 12px);
+    }
+    .section-title {
+      font-family: var(--font-sans);
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+      color: var(--text);
+    }
+    .bounce-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s var(--ease-bounce), transform 0.7s var(--ease-bounce);
+    }
+    .bounce-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ----- About: 非对称双栏叙事 ----- */
+    .about-narrative {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.9fr) minmax(300px, 1.1fr);
+      gap: clamp(2.5rem, 6vw, 5rem);
+      align-items: start;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1rem;
+    }
+    @media (max-width: 900px) {
+      .about-narrative { grid-template-columns: 1fr; }
+    }
+    .about-left {
+      position: sticky;
+      top: calc(var(--nav-h) + 1.5rem);
+    }
+    .about-photo {
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      width: 100%;
+      max-width: 420px;
+    }
+    .about-tags {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .about-tags span {
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+    /* ----- CV accordion (minimal) ----- */
+    .cv-accordion-wrap {
+      margin-top: 2.5rem;
+      max-width: 420px;
+    }
+    html.cv-open,
+    body.cv-open {
+      overflow: hidden;
+    }
+    .cv-accordion-wrap.expanded {
+      --cv-col: min(40rem, calc(100% - 2.5rem));
+      position: fixed;
+      inset: 0;
+      z-index: 1100;
+      margin-top: 0;
+      max-width: none;
+      width: 100%;
+      max-height: none;
+      background: var(--bg);
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: auto;
+      touch-action: pan-y;
+      box-sizing: border-box;
+    }
+    .cv-accordion-wrap.expanded .cv-toggle {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      width: 100%;
+      max-width: var(--cv-col);
+      box-sizing: border-box;
+      justify-content: flex-start;
+      margin: 0 auto;
+      padding: 1rem 0;
+      background: #fff;
+      border-bottom: none;
+      box-shadow: 0 1px 0 #e8e8e8;
+    }
+    .cv-accordion-wrap.expanded .cv-shell {
+      display: block;
+      grid-template-rows: unset;
+      width: 100%;
+      max-width: var(--cv-col);
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 0 clamp(2.5rem, 6vh, 4rem);
+      box-sizing: border-box;
+    }
+    .cv-accordion-wrap.expanded .cv-shell-inner {
+      overflow: visible;
+      min-height: unset;
+    }
+    .cv-accordion-wrap.expanded .cv-panel {
+      max-width: none;
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+    }
+    .cv-accordion-wrap.expanded .cv-panel-bio {
+      max-width: none;
+    }
+    .cv-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--text);
+      padding: 0 0 4px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      text-align: left;
+    }
+    .cv-toggle:hover { color: var(--accent); border-color: var(--accent); }
+    .cv-toggle .cv-toggle-icon { transition: transform 0.35s ease; display: inline-block; }
+    .cv-accordion-wrap.expanded .cv-toggle .cv-toggle-icon { transform: rotate(90deg); }
+    .cv-shell {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.5s var(--ease-out);
+    }
+    .cv-shell-inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+    .cv-panel {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e0e0e0;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      line-height: 1.75;
+      color: var(--text-muted);
+    }
+    .cv-panel-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .cv-panel-name {
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+    .cv-panel-meta {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .cv-panel-bio {
+      margin-top: 1.25rem;
+      font-size: 0.875rem;
+      line-height: 1.85;
+      max-width: 38em;
+    }
+    .cv-acc-item {
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .cv-acc-item:first-of-type { border-top: 1px solid #e0e0e0; }
+    .cv-acc-head {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.35rem 0;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      transition: color 0.2s;
+    }
+    .cv-acc-head:hover { color: var(--accent); }
+    .cv-acc-head .chev {
+      font-size: 0.65rem;
+      opacity: 0.45;
+      transition: transform 0.3s ease;
+    }
+    .cv-acc-item.open .cv-acc-head .chev { transform: rotate(180deg); }
+    .cv-acc-body {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.4s var(--ease-out);
+    }
+    .cv-acc-item.open .cv-acc-body { grid-template-rows: 1fr; }
+    .cv-acc-body-inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+    .cv-acc-content {
+      padding: 0 0 2rem;
+    }
+    .cv-block {
+      margin-bottom: 2.25rem;
+    }
+    .cv-block:last-child { margin-bottom: 0; }
+    .cv-block-title {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.875rem;
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.01em;
+    }
+    .cv-block-meta {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .cv-block ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      list-style: disc;
+    }
+    .cv-block li { margin-bottom: 0.65rem; padding-left: 0.15rem; }
+    .cv-block li:last-child { margin-bottom: 0; }
+    .cv-skills-row { margin-bottom: 1.25rem; }
+    .cv-skills-row:last-child { margin-bottom: 0; }
+    .cv-skills-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .about-right.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+    .about-right.reveal.visible { opacity: 1; transform: translateY(0); }
+    .about-left-inner.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+    .about-left-inner.reveal.visible { opacity: 1; transform: translateY(0); }
+    .about-greeting {
+      font-family: var(--font-sans);
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      font-weight: 700;
+      margin-bottom: 1.75rem;
+      color: var(--text);
+    }
+    .about-body p {
+      font-family: var(--font-sans);
+      font-size: 1.0625rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .about-body p:last-child { margin-bottom: 0; }
+
+    /* ----- Timeline 便利贴/手写便签风格 ----- */
+    .timeline { max-width: 720px; margin: 0 auto; }
+    .timeline-item {
+      background: #FFFFFF;
+      border-radius: 0;
+      margin-bottom: 0;
+      border: 1px solid #e0e0e0;
+      border-bottom: none;
+      box-shadow: none;
+      overflow: hidden;
+    }
+    .timeline-item:last-child { border-bottom: 1px solid #e0e0e0; }
+    .timeline-item .timeline-head {
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .timeline-item .timeline-head:hover { background: #fafafa; }
+    .timeline-item .timeline-head .time { font-family: var(--font-sans); font-weight: 600; color: var(--text); font-size: 1rem; }
+    .timeline-item .timeline-head .tag { font-size: 0.75rem; color: var(--text-muted); background: transparent; padding: 0; border-radius: 0; }
+    .timeline-item .timeline-head .chevron { transition: transform 0.3s; color: var(--text-muted); }
+    .timeline-item.open .timeline-head .chevron { transform: rotate(180deg); }
+    .timeline-item .timeline-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s var(--ease-out);
+    }
+    .timeline-item.open .timeline-body { max-height: 400px; }
+    .timeline-item .timeline-body-inner {
+      padding: 0 1.25rem 1.25rem;
+      border-top: 1px dashed rgba(166,124,82,0.15);
+      padding-top: 1rem;
+    }
+    .timeline-item .timeline-body .line-en { font-family: var(--font-sans); font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem; line-height: 1.6; }
+    .timeline-item .timeline-body .line-zh { font-family: var(--font-sans); font-size: 0.95rem; color: var(--text); line-height: 1.85; }
+
+    /* ----- Timeline: 2026 当前状态卡片 ----- */
+    .timeline-item--2026 {
+      border-width: 1px;
+      border-color: #d8d4d0;
+      background: linear-gradient(180deg, #fdfcfa 0%, #fff 48%);
+      box-shadow: 0 1px 0 rgba(209, 97, 76, 0.12), 0 12px 40px -24px rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+    .timeline-item--2026::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, var(--accent), rgba(209, 97, 76, 0.35));
+    }
+    .timeline-head-2026 {
+      padding: 1.15rem 1.35rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      border-bottom: 1px solid rgba(209, 97, 76, 0.12);
+    }
+    .timeline-item--2026 .timeline-head-2026 .time {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .timeline-2026-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .timeline-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      animation: timelinePulse 2.2s ease-in-out infinite;
+      box-shadow: 0 0 0 0 rgba(209, 97, 76, 0.45);
+    }
+    @keyframes timelinePulse {
+      0%, 100% { opacity: 0.45; transform: scale(1); box-shadow: 0 0 0 0 rgba(209, 97, 76, 0.35); }
+      50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 14px 5px rgba(209, 97, 76, 0.28); }
+    }
+    .timeline-2026-body { padding: 0; }
+    .timeline-2026-main {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 1rem 1.15rem;
+      padding: 1.25rem 1.35rem 0.75rem;
+      align-items: start;
+    }
+    @media (max-width: 520px) {
+      .timeline-2026-main { grid-template-columns: 72px 1fr; gap: 0.85rem; }
+    }
+    .timeline-2026-thumb-wrap {
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #ebe8e4;
+      aspect-ratio: 4/3;
+      background: #f0ebe6;
+    }
+    .timeline-2026-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(1.2px) saturate(0.92);
+      transform: scale(1.06);
+      opacity: 0.88;
+    }
+    .timeline-2026-copy .line-zh {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.88;
+      margin-bottom: 0.85rem;
+    }
+    .timeline-2026-copy .line-zh:last-of-type { margin-bottom: 0.35rem; }
+    .timeline-2026-copy .org-name {
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      border-bottom: 2px solid rgba(209, 97, 76, 0.35);
+      padding-bottom: 1px;
+    }
+    .timeline-2026-more {
+      margin-top: 0.65rem;
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: none;
+      border: none;
+      padding: 0.35rem 0;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+    .timeline-2026-more:hover { color: var(--text); }
+    .timeline-2026-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.1rem;
+      padding-bottom: 1rem;
+    }
+    .timeline-2026-tags span {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      padding: 0.3rem 0.65rem;
+      border: 1px solid #e5e2de;
+      background: #fff;
+    }
+    .timeline-2026-detail {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.55s var(--ease-out);
+      border-top: 1px dashed rgba(166, 124, 82, 0.2);
+    }
+    .timeline-2026-detail.is-open { grid-template-rows: 1fr; }
+    .timeline-2026-detail-inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+    .timeline-2026-detail-content {
+      padding: 1.1rem 1.35rem 1.35rem;
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      line-height: 1.88;
+      color: var(--text);
+    }
+    .timeline-2026-detail-content .detail-lead {
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      font-size: 0.93rem;
+    }
+    .timeline-2026-detail-content h4 {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin: 1.15rem 0 0.5rem;
+    }
+    .timeline-2026-detail-content h4:first-child { margin-top: 0; }
+    .timeline-2026-detail-content ul {
+      margin: 0 0 0.25rem;
+      padding-left: 1.15rem;
+      color: var(--text-muted);
+    }
+    .timeline-2026-detail-content li { margin-bottom: 0.5rem; }
+
+    /* ----- Current Frequency 双卡片 ----- */
+    .frequency-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      position: relative;
+    }
+    @media (max-width: 768px) { .frequency-wrap { grid-template-columns: 1fr; } }
+    .freq-card {
+      padding: 2rem;
+      border-radius: 0;
+      border: 1px solid #e0e0e0;
+    }
+    .freq-card.harvest { background: #FFFFFF; box-shadow: none; border: 1px solid #e0e0e0; }
+    .freq-card.fog {
+      position: relative;
+      background: rgba(255, 255, 255, 0.62);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.65), 0 10px 28px rgba(0,0,0,0.05);
+      border: 1px solid rgba(223, 223, 223, 0.95);
+      backdrop-filter: blur(13px) saturate(108%);
+      -webkit-backdrop-filter: blur(13px) saturate(108%);
+      transition: backdrop-filter 0.35s var(--ease-out), -webkit-backdrop-filter 0.35s var(--ease-out), background 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+    }
+    .freq-card.fog:hover {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(7px) saturate(104%);
+      -webkit-backdrop-filter: blur(7px) saturate(104%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.75), 0 14px 30px rgba(0,0,0,0.06);
+    }
+    .freq-card h3 { font-family: var(--font-sans); font-size: 1.1rem; font-weight: 600; margin-bottom: 1.2rem; color: var(--text); }
+    .freq-card p { font-size: 0.95rem; line-height: 1.92; color: #222; margin-bottom: 1.15rem; }
+    .freq-card p:last-child { margin-bottom: 0; }
+    .freq-card.fog .fog-body p {
+      max-width: 34em;
+      margin-bottom: 1.5rem;
+    }
+    .freq-card.fog .fog-body p:nth-child(2n) {
+      margin-left: auto;
+      max-width: 31em;
+    }
+    .freq-card.fog .fog-body p:last-child { margin-bottom: 0; }
+    .freq-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .freq-tag { font-size: 0.75rem; color: var(--text-muted); background: #f5f5f5; padding: 0.25rem 0.6rem; border-radius: 0; }
+    .freq-float { position: absolute; font-size: 0.75rem; color: var(--text-muted); opacity: 0.6; pointer-events: none; }
+
+    /* ----- Bilingual split: EN left, ZH right ----- */
+    .bi-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: 1.25rem;
+      row-gap: 0.4rem;
+      align-items: start;
+    }
+    .bi-split .bi-en {
+      color: var(--text);
+      padding-right: 0.25rem;
+    }
+    .bi-split .bi-zh {
+      color: var(--text-muted);
+      border-left: 1px solid #ededed;
+      padding-left: 1rem;
+    }
+    #timeline .bi-split .bi-en,
+    #timeline .bi-split .bi-zh,
+    #status .bi-split .bi-en,
+    #status .bi-split .bi-zh,
+    #frequency .bi-split .bi-en,
+    #frequency .bi-split .bi-zh {
+      line-height: 1.9;
+    }
+    @media (max-width: 900px) {
+      .bi-split {
+        grid-template-columns: 1fr;
+        row-gap: 0.5rem;
+      }
+      .bi-split .bi-zh {
+        border-left: none;
+        border-top: 1px solid #ededed;
+        padding-left: 0;
+        padding-top: 0.5rem;
+      }
+    }
+
+    /* ----- Current Status（极简 · 状态标签 · 关键词） ----- */
+    .status-panel {
+      --status-navy: #1e3d59;
+      background: #fff;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+      border: 1px solid #e0e0e0;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .status-module {
+      padding: 1.65rem 1.75rem;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .status-module:last-of-type { border-bottom: none; }
+    .status-module-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .status-module-title {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.35;
+      margin: 0;
+    }
+    .status-module-title .title-en {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+    .status-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      justify-content: flex-end;
+    }
+    .status-badge {
+      font-family: var(--font-sans);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.55rem;
+      border: 1px solid #d5d5d5;
+      color: #555;
+      background: #fff;
+      line-height: 1;
+    }
+    .status-badge--confirmed {
+      border-color: rgba(209, 97, 76, 0.45);
+      color: var(--accent);
+      background: rgba(209, 97, 76, 0.04);
+    }
+    .status-badge--active {
+      border-color: rgba(30, 61, 89, 0.35);
+      color: var(--status-navy);
+      background: rgba(30, 61, 89, 0.04);
+    }
+    .status-text {
+      font-family: var(--font-sans);
+      font-size: 0.9375rem;
+      line-height: 1.88;
+      color: #3a3a3a;
+      margin: 0;
+    }
+    .status-kw { font-weight: 600; color: var(--text); }
+    .status-proper {
+      font-weight: 700;
+      color: var(--status-navy);
+      letter-spacing: -0.01em;
+    }
+    .status-proper--accent {
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .status-pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+    .status-pillar {
+      padding-top: 1rem;
+      border-top: 1px solid #efefef;
+    }
+    .status-pillar:first-child {
+      padding-top: 0;
+      border-top: none;
+    }
+    .status-pillar-label {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 0.45rem;
+    }
+    .status-pillar p {
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      line-height: 1.82;
+      color: #3a3a3a;
+      margin: 0;
+    }
+    .status-cta {
+      margin: 0;
+      padding: 1.5rem 1.75rem 1.65rem;
+      border-top: 1px solid #e0e0e0;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1.9;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      background: #fafafa;
+    }
+
+    /* ----- Photography: 全宽流动影像墙 ----- */
+    section#photography {
+      max-width: none;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: clamp(3.5rem, 8vw, 6.5rem);
+      padding-bottom: clamp(3.5rem, 8vw, 6.5rem);
+      box-sizing: border-box;
+    }
+    section#photography .photography-head {
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: clamp(1.5rem, 4vw, 3rem);
+      padding-right: clamp(1.5rem, 4vw, 3rem);
+      margin-bottom: 2rem;
+    }
+    section#photography .photography-head .section-title {
+      margin-bottom: 0;
+    }
+    .film-strip-wrap {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      margin-bottom: 2rem;
+      overflow: hidden;
+      padding: 1rem 0;
+      box-sizing: border-box;
+    }
+    .film-strip {
+      height: 340px;
+      overflow: hidden;
+      cursor: default;
+    }
+    @media (max-width: 768px) {
+      .film-strip { height: 260px; }
+      .film-card { height: 220px; }
+      .film-strip-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .film-strip { overflow-x: auto; }
+      .film-track { animation: none; }
+    }
+    .film-strip:hover .film-track { animation-play-state: paused; }
+    .film-track {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      height: 100%;
+      width: max-content;
+      animation: filmScroll 30s linear infinite;
+    }
+    @keyframes filmScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .film-card {
+      flex-shrink: 0;
+      height: 300px;
+      border-radius: 24px;
+      overflow: hidden;
+      margin: 0 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: transform 0.4s var(--ease-bounce), filter 0.3s, box-shadow 0.3s;
+    }
+    .film-strip:hover .film-card { filter: brightness(0.85); }
+    .film-strip:hover .film-card:hover {
+      filter: brightness(1.1);
+      transform: scale(1.05);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    }
+    .film-card img {
+      height: 100%;
+      width: auto;
+      object-fit: cover;
+      display: block;
+    }
+    .film-card.work-fragment { position: relative; }
+    .film-card .work-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem 1.25rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.6));
+      color: #fff;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .film-card:hover .work-caption { opacity: 1; }
+    .film-quote {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 1rem clamp(1.5rem, 4vw, 3rem);
+      box-sizing: border-box;
+    }
+    .film-quote p {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      font-style: italic;
+    }
+    .film-quote .line-en { font-family: var(--font-sans); font-size: 0.9rem; margin-bottom: 0.35rem; }
+
+    /* ----- 全屏大图预览 Lightbox ----- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .lightbox.open { opacity: 1; visibility: visible; pointer-events: auto; }
+    .lightbox img { max-width: 95%; max-height: 95%; object-fit: contain; border-radius: 12px; }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    /* envelope slide-in for interests section */
+    .envelope-in {
+      opacity: 0;
+      transform: translateY(30px) scale(0.98);
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+    .envelope-in.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* ----- Contact: 极简文字连接区 ----- */
+    .contact-copy {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 4vw, 3rem);
+      text-align: center;
+    }
+    .contact-kicker {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.05rem;
+    }
+    .contact-hello {
+      font-family: var(--font-sans);
+      font-size: clamp(1.25rem, 2.7vw, 1.62rem);
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .contact-intro {
+      font-family: var(--font-sans);
+      font-size: 0.97rem;
+      line-height: 1.95;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .contact-guide {
+      font-family: var(--font-sans);
+      font-size: 1.01rem;
+      line-height: 1.95;
+      color: var(--text);
+      margin-bottom: 0;
+    }
+    section#contact {
+      padding-bottom: clamp(5.5rem, 11vw, 8rem);
+    }
+
+    /* ----- Footer ----- */
+    .footer {
+      text-align: center;
+      padding: 2.5rem 1.5rem 3rem;
+      border-top: 1px solid rgba(166, 124, 82, 0.15);
+    }
+    .footer-msg {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .footer-msg-zh {
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .social-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .social-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-muted);
+      transition: color 0.3s, transform 0.3s var(--ease-bounce);
+    }
+    .social-item:hover { color: var(--accent); transform: translateY(-4px); }
+    .social-item svg {
+      width: 28px;
+      height: 28px;
+      margin-bottom: 0.25rem;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+    }
+    .social-item span { font-size: 0.8rem; color: var(--text-muted); }
+    .social-item[title]:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-6px);
+      padding: 0.35rem 0.6rem;
+      font-size: 0.75rem;
+      color: #fff;
+      background: var(--text);
+      border-radius: 8px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .social-item { position: relative; }
+    .social-item:hover::after { opacity: 1; transform: translateX(-50%) translateY(-8px); }
+
+    /* ----- AI Pet (portal) ----- */
+    #projects { scroll-margin-top: calc(var(--nav-h) + 12px); }
+    .pet-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1001;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--text);
+      color: #fff;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      transition: transform 0.4s var(--ease-bounce), box-shadow 0.3s;
+    }
+    .pet-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+    }
+    .pet-btn-label {
+      position: absolute;
+      right: calc(100% + 10px);
+      white-space: nowrap;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: #fff;
+      padding: 0.4rem 0.8rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      opacity: 0;
+      transform: translateX(8px);
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    .pet-btn:hover .pet-btn-label {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ----- Chat panel (cream blue) ----- */
+    .chat-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.2);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.35s, visibility 0.35s;
+    }
+    .chat-backdrop.open { opacity: 1; visibility: visible; pointer-events: auto; }
+    .chat-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 400px;
+      height: 100%;
+      z-index: 2001;
+      background: #FFFFFF;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.45s var(--ease-out);
+      border-radius: 0;
+      border-left: 1px solid #e8e8e8;
+      pointer-events: none;
+    }
+    .chat-panel.open { transform: translateX(0); pointer-events: auto; }
+    .chat-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+    }
+    .chat-header h2 {
+      font-family: var(--font-sans);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .chat-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.8);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.2rem;
+      line-height: 1;
+      transition: background 0.2s, color 0.2s;
+    }
+    .chat-close:hover { background: var(--text); color: #fff; }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-height: 0;
+    }
+    .chat-msg {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      max-width: 92%;
+      animation: msgIn 0.4s var(--ease-out);
+    }
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(8px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .chat-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+    .chat-msg-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--text);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: #fff;
+      font-weight: 600;
+    }
+    .chat-msg.user .chat-msg-avatar { display: none; }
+    .chat-msg-bubble {
+      padding: 0.85rem 1.1rem;
+      border-radius: 20px 20px 20px 4px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .chat-msg.user .chat-msg-bubble {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 20px 20px 4px 20px;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .chat-msg.ai .chat-msg-bubble {
+      background: #f7f7f7;
+      color: var(--text);
+      border: 1px solid #eee;
+    }
+    .chat-msg-bubble .stream-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--accent);
+      margin-left: 2px;
+      animation: blink 0.8s ease-in-out infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    .chat-thinking {
+      display: flex;
+      gap: 5px;
+      padding: 0.5rem 0;
+      align-items: center;
+    }
+    .chat-thinking span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: think 1.2s ease-in-out infinite;
+    }
+    .chat-thinking span:nth-child(2) { animation-delay: 0.15s; }
+    .chat-thinking span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes think {
+      0%, 100% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    .chat-input-wrap {
+      padding: 1rem 1.25rem 1.25rem;
+      border-top: 1px solid #eee;
+      background: #fff;
+    }
+    .chat-input-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.7rem 1rem;
+      background: #fff;
+      border-radius: 20px;
+      border: 2px solid rgba(166, 124, 82, 0.2);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .chat-input-bar:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(209, 97, 76, 0.2);
+    }
+    .chat-input {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .chat-input::placeholder { color: var(--text-muted); opacity: 0.7; }
+    .chat-send {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .chat-send:not(.ready) { opacity: 0.4; cursor: default; }
+    .chat-send.ready:hover { transform: scale(1.08); }
+  </style>
+</head>
+<body>
+  <div class="deco deco-star" style="top:12%;left:8%;">✦</div>
+  <div class="deco deco-star" style="top:18%;right:10%;">✦</div>
+  <div class="deco deco-cloud" style="top:25%;right:5%;">☁️</div>
+  <div class="deco deco-cloud d2" style="bottom:30%;left:6%;">☁️</div>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo">Rosanna<br /><span class="nav-face">('◡' )</span></a>
+      <ul class="nav-links">
+        <li><a href="#about" class="nav-link" data-nav="about">about</a></li>
+        <li><a href="#projects" class="nav-link" data-nav="projects">projects</a></li>
+        <li><a href="#photography" class="nav-link" data-nav="photography">photography</a></li>
+        <li><a href="#contact" class="nav-link" data-nav="contact">contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-rain" id="home">
+      <div class="hero-grid-bg" id="heroGridBg" aria-hidden="true"></div>
+      <div class="hero-matrix" id="heroMatrix">
+        <div class="hero-row" id="heroRow1"></div>
+        <div class="hero-row" id="heroRow2"></div>
+        <div class="hero-row" id="heroRow3"></div>
+      </div>
+      <a href="#about" class="hero-scroll-hint" aria-label="Scroll to about">↓</a>
+    </section>
+
+    <section id="about">
+      <div class="about-narrative">
+        <div class="about-left">
+          <div class="about-left-inner reveal">
+          <img src="imgs/8431772980596_.pic.jpg" alt="Rosanna" class="about-photo" />
+          <div class="about-tags">
+            <span>#LifelongLearner</span>
+            <span>#FinancialExplorer</span>
+            <span>#Web3Newbie</span>
+            <span>#LondonLife</span>
+            <span>#NatureLover</span>
+          </div>
+          </div>
+          <div class="cv-accordion-wrap" id="cvAccordionWrap">
+            <button type="button" class="cv-toggle" id="cvToggle" aria-expanded="false" aria-controls="cvPanelBlock">
+              <span class="cv-toggle-icon" aria-hidden="true">→</span>
+              View my CV
+            </button>
+            <div class="cv-shell">
+              <div class="cv-shell-inner">
+                <div class="cv-panel" id="cvPanelBlock" role="region" aria-labelledby="cvToggle" hidden>
+                  <div class="cv-panel-header">
+                    <p class="cv-panel-name">Yufei He (Rosanna)</p>
+                    <p class="cv-panel-meta"><strong>Focus:</strong> Finance &amp; Policy</p>
+                    <p class="cv-panel-meta"><strong>Location:</strong> London / Hong Kong</p>
+                    <p class="cv-panel-bio">Currently studying at King's College London (KCL), majoring in History, Politics and Economics. Gained internship experience across top securities and futures firms as well as Sino-UK policy institutions, with strengths in financial modeling, investment memo writing, and policy research. / 现就读于伦敦国王学院（KCL），主修政治、经济与历史。拥有顶尖券商、期货公司及中英政策机构的实习经验，擅长财务建模、投资备忘录撰写及政策研究。</p>
+                  </div>
+
+                  <div class="cv-acc-item open" data-cv-section>
+                    <button type="button" class="cv-acc-head" aria-expanded="true">
+                      Education
+                      <span class="chev">▼</span>
+                    </button>
+                    <div class="cv-acc-body">
+                      <div class="cv-acc-body-inner">
+                        <div class="cv-acc-content">
+                          <div class="cv-block">
+                            <p class="cv-block-title">King's College London</p>
+                            <p class="cv-block-meta">2023 – 2026 · BA History, Politics &amp; Economics</p>
+                            <p class="cv-block-meta">Expected Grade: 2:1 / 预期成绩: 2:1</p>
+                            <ul>
+                              <li><strong>Core Courses / 核心课程:</strong> Political Economy, Economic History, Global Finance, International Trade, Foreign Policy / 政治经济学、经济史、全球金融、国际贸易、外交政策</li>
+                            </ul>
+                          </div>
+                          <div class="cv-block">
+                            <p class="cv-block-title">Bootham School</p>
+                            <p class="cv-block-meta">2021 – 2023 · A Levels</p>
+                            <ul>
+                              <li>Mathematics A*, Art A, Business A, Chinese A, Physics B / 数学 A*，艺术 A，商务 A，中文 A，物理 B</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="cv-acc-item" data-cv-section>
+                    <button type="button" class="cv-acc-head" aria-expanded="false">
+                      Experience
+                      <span class="chev">▼</span>
+                    </button>
+                    <div class="cv-acc-body">
+                      <div class="cv-acc-body-inner">
+                        <div class="cv-acc-content">
+                          <div class="cv-block">
+                            <p class="cv-block-title">The 48 Group Club</p>
+                            <p class="cv-block-meta">Policy &amp; Business Relations Intern · 2026.03 – Present</p>
+                            <ul>
+                              <li><strong>Policy Research / 政策研究:</strong> Drafted internal memos on cross-border RMB opportunities under China's 15th Five-Year Plan / 撰写关于中国「十五五」规划下跨境人民币机会的内部备忘录。</li>
+                              <li><strong>Event Management / 活动管理:</strong> Supported organization of the 2026 Sino-UK Entrepreneurs Forum, liaising with senior government and institutional leaders in AI, technology, and finance / 协助筹办 2026 中英企业家论坛，对接 AI、科技及金融领域的政府与机构高层。</li>
+                            </ul>
+                          </div>
+                          <div class="cv-block">
+                            <p class="cv-block-title">CITIC Futures (中信期货)</p>
+                            <p class="cv-block-meta">Futures Sales Intern · 2025.07 – 2025.09</p>
+                            <ul>
+                              <li><strong>Model Development / 模型开发:</strong> Built a policy-industry-commodities linkage model to track policy impact on A-share and crude oil markets / 构建「政策–行业–大宗商品」联动模型，追踪政策变化对 A 股及原油市场的影响。</li>
+                              <li><strong>Strategy Research / 策略研究:</strong> Wrote 15+ investment memos for institutional clients and backtested long-short trade ideas / 为机构客户撰写 15 余份投资备忘录，并进行多空交易思路的回测验证。</li>
+                            </ul>
+                          </div>
+                          <div class="cv-block">
+                            <p class="cv-block-title">Huatai Securities (华泰证券)</p>
+                            <p class="cv-block-meta">M&amp;A Analyst Intern · 2024.06 – 2024.08</p>
+                            <ul>
+                              <li><strong>Financial Modeling / 财务建模:</strong> Built 3-statement models and DCF frameworks for 10+ listed companies using Capital IQ and iFinD / 使用 Capital IQ 和 iFinD 为 10 余家上市公司构建三表模型及 DCF 框架。</li>
+                              <li><strong>Due Diligence / 尽职调查:</strong> Conducted deep financial analysis on 3 M&A targets, identifying valuation gaps in a 30bn RMB new-energy market / 对 3 个并购目标进行深度财务分析，在 300 亿规模的新能源市场中识别估值差距。</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="cv-acc-item" data-cv-section>
+                    <button type="button" class="cv-acc-head" aria-expanded="false">
+                      Projects
+                      <span class="chev">▼</span>
+                    </button>
+                    <div class="cv-acc-body">
+                      <div class="cv-acc-body-inner">
+                        <div class="cv-acc-content">
+                          <div class="cv-block">
+                            <p class="cv-block-title">KCL CSSA (学联)</p>
+                            <p class="cv-block-meta">Department Lead / 部门负责人 · 2024.05 – Present</p>
+                            <ul>
+                              <li>Coordinated 14 student organizations and planned/led business networking events with 200+ attendees / 统筹 14 个学生组织，策划并领导超过 200 人规模的商业交流活动。</li>
+                            </ul>
+                          </div>
+                          <div class="cv-block">
+                            <p class="cv-block-title">CICC Wealth Asset Allocation Competition</p>
+                            <p class="cv-block-meta">Team Lead / 队长</p>
+                            <ul>
+                              <li>Managed a 1 million virtual portfolio and dynamically adjusted positions via macro signals, delivering 12% absolute return / 管理 100 万虚拟资产组合，通过宏观信号动态调整，实现 12% 绝对收益。</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="cv-acc-item" data-cv-section>
+                    <button type="button" class="cv-acc-head" aria-expanded="false">
+                      Skills
+                      <span class="chev">▼</span>
+                    </button>
+                    <div class="cv-acc-body">
+                      <div class="cv-acc-body-inner">
+                        <div class="cv-acc-content">
+                          <div class="cv-skills-row">
+                            <p class="cv-skills-label">Tools / 工具</p>
+                            <p>Capital IQ, iFinD, Bloomberg, Excel, PPT</p>
+                          </div>
+                          <div class="cv-skills-row">
+                            <p class="cv-skills-label">Languages / 语言</p>
+                            <p>Mandarin (Native), Cantonese (Native), English (IELTS 7.0) / 普通话（母语）, 粤语（母语）, 英语（IELTS 7.0）</p>
+                          </div>
+                          <div class="cv-skills-row">
+                            <p class="cv-skills-label">Interests / 兴趣</p>
+                            <p>Equity Markets, Digital Assets &amp; Web3, Sino-UK Relations, Skiing, Film / 权益市场, 数字资产 &amp; Web3, 中英关系, 滑雪, 电影</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="about-right reveal">
+          <p class="about-greeting">Hello everyone,</p>
+          <div class="about-body">
+            <p>I'm Rosanna, based in London. My background began in business, but I soon found myself drawn not only to coursework but to what lay behind the numbers—patterns in policy, the pulse of markets, and the question that followed me from Kings through Covent Garden to a café window facing The City: does that world of suits and flashing lights really belong to someone like me?</p>
+            <p>Currently, I define myself as a recorder and an explorer. From KCL lectures to the edges of Web3 and AI, my focus is on tracing meaningful connections between people, policies, and markets. My goal is to use analytical rigor and curiosity to create clarity from complexity—and to leave room for the kind of thinking that needs no noise, only attention: think of nothing, think of wind.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="projects">
+    <section id="timeline">
+      <h2 class="section-title bounce-in">Growth Journey / 成长的过程</h2>
+      <div class="timeline bounce-in" id="timelineWrap">
+        <div class="timeline-item" data-idx="0">
+          <div class="timeline-head"><span class="time">2023 · London</span><span class="tag">#FirstTaste / #初体验</span><span class="chevron">▼</span></div>
+          <div class="timeline-body"><div class="timeline-body-inner"><p class="line-zh">I arrived at KCL with a BA offer in hand. Initial curiosity was quickly overwhelmed by heavy readings and fully English seminars. Watching people rush through the City of London, I started to question myself: what can this major really lead to? / 带着 BA 的录取通知书来到 KCL。最初的好奇很快被海量的文献和全英讨论课的压力盖过了。在伦敦街头看着金融城行色匆匆的人，开始自我怀疑：我选的专业未来到底能做什么？</p></div></div>
+        </div>
+        <div class="timeline-item" data-idx="1">
+          <div class="timeline-head"><span class="time">2024 Summer · China</span><span class="tag">#OvertimeDiary / #加班记录</span><span class="chevron">▼</span></div>
+          <div class="timeline-body"><div class="timeline-body-inner"><p class="line-zh">During my M&amp;A internship at Huatai Securities, I researched the new-energy BMS market daily with Capital IQ and iFinD. At first, models felt like they were fighting me. But the moment I balanced a 3-statement model late at night, I realized this process of finding certainty is actually exciting. / 在华泰证券做 M&amp;A 实习。每天对着 Capital IQ 和 iFinD 调研新能源 BMS 市场。一开始很受挫，觉得数据模型像在和我作对。但熬夜配平 3-statement models 的那一刻，我发现这种「寻找确定性」的过程其实挺酷的。</p></div></div>
+        </div>
+        <div class="timeline-item" data-idx="2">
+          <div class="timeline-head"><span class="time">2024-Present · KCL CSSA / 2024 至今 · KCL CSSA</span><span class="tag">#BigHeart / #大心脏</span><span class="chevron">▼</span></div>
+          <div class="timeline-body"><div class="timeline-body-inner"><p class="line-zh">As a department lead, I coordinated 14 student organizations. This role was less about glamour and more about details: venues, resources, and unexpected issues at 200+ attendee events. Through these challenges, I gradually confirmed my ability to find balance in complex environments. / 作为社团部负责人，负责协调 14 个学生组织。这不是什么光鲜的职位，更多是处理琐碎：场地、资源、200 多人的活动突发状况。在这些挑战中，我慢慢确定了自己在复杂环境中寻找平衡点的能力。</p></div></div>
+        </div>
+        <div class="timeline-item" data-idx="3">
+          <div class="timeline-head"><span class="time">2025 Summer · China</span><span class="tag">#MarketReality / #实战感</span><span class="chevron">▼</span></div>
+          <div class="timeline-body"><div class="timeline-body-inner"><p class="line-zh">At CITIC Futures, things became real: tracking how policy shifts affected crude oil and A-share markets. Watching simulated capital swing into 12% drawdowns or gains from policy changes made the market's harshness tangible and deepened my respect for risk. / 步入中信期货实习。不再是纸上谈兵，而是跟踪政策对原油和 A 股的真实影响。看着模拟资金因为政策变动而产生 12% 的回撤或收益时，这种真实市场的残酷感扑面而来，让我对风险产生了敬畏。</p></div></div>
+        </div>
+        <div class="timeline-item timeline-item--2026" data-idx="4">
+          <div class="timeline-head-2026">
+            <span class="time">2026 Summer · London</span>
+            <span class="timeline-2026-status"><span class="timeline-pulse" aria-hidden="true"></span>#CurrentStatus</span>
+          </div>
+          <div class="timeline-2026-body">
+            <div class="timeline-2026-main">
+              <div class="timeline-2026-thumb-wrap" aria-hidden="true">
+                <img class="timeline-2026-thumb" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=240&amp;h=180&amp;fit=crop&amp;q=65" alt="" width="120" height="90" loading="lazy" decoding="async" />
+              </div>
+              <div class="timeline-2026-copy">
+                <p class="line-zh bi-split"><span class="bi-en">After countless crazy attempts and heart-racing coffee chats in London, I finally secured an offer from <span class="org-name">The 48 Group Club</span> before summer officially began - powered by persistence and proactive outreach. ✨</span><span class="bi-zh">在伦敦经历了无数次「疯狂尝试」和喝到心跳加速的 Coffee Chat 之后，靠一股不服输的劲儿和主动敲门，终于在 Summer 正式开启前拿到了 <span class="org-name">The 48 Group Club</span> 的 Offer！✨</span></p>
+                <p class="line-zh bi-split"><span class="bi-en">Keywords: <strong>London</strong> · <strong>The 48 Group Club</strong> · <strong>Policy Research</strong>. Here's what I'm working on day to day - click <strong>Read More</strong> for details.</span><span class="bi-zh">关键词：<strong>伦敦</strong> · <strong>The 48 Group Club</strong> · <strong>政策研究</strong>。下面是我现在每天都在忙些什么——想看得更细，可以点「阅读更多」。</span></p>
+                <button type="button" class="timeline-2026-more" id="timeline2026More" aria-expanded="false" aria-controls="timeline2026Detail">Read More / 阅读更多</button>
+                <div class="timeline-2026-tags">
+                  <span>#PolicyResearch</span>
+                  <span>#EventPlanning</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-2026-detail" id="timeline2026Detail">
+              <div class="timeline-2026-detail-inner">
+                <div class="timeline-2026-detail-content">
+                  <p class="detail-lead bi-split"><span class="bi-en">My daily life now is intensive brainstorming in this historic nonprofit. I'm deeply researching China's 15th Five-Year Plan and trying to extract the <strong>next opportunity in Sino-UK financial cooperation</strong> from dense policy text.</span><span class="bi-zh">现在每天的生活是在这家历史悠久的非盈利组织里「脑暴」。我正在深度钻研中国「十五五」规划，试着从枯燥的政策条文中，梳理出<strong>中英金融合作的下一个风口</strong>。</span></p>
+                  <p class="detail-lead bi-split"><span class="bi-en">What excites me most is being one of the behind-the-scenes drivers of the <strong>May 2026 Sino-UK Entrepreneurs Forum</strong> - bringing together leaders from both governments, the City, and top universities to discuss AI, technology, and investment. Building a flagship event from zero is exhausting, but genuinely cool.</span><span class="bi-zh">最让我兴奋的是作为 <strong>2026 年 5 月「中英企业家论坛」</strong>的幕后推手之一——我们要把两国政府、金融城和顶尖学府的大佬们聚在一起，聊聊 AI、科技和投资。这种从零开始策划旗舰级活动的感觉，虽然累，但真的很酷。</span></p>
+                  <h4>Policy Analysis / 政策分析</h4>
+                  <ul>
+                    <li class="bi-split"><span class="bi-en">Independently drafted internal memos on opportunities and pathways for <strong>cross-border RMB</strong> under the 15th Five-Year Plan context.</span><span class="bi-zh">独立撰写内部备忘录，聚焦「十五五」背景下<strong>跨境人民币</strong>的机会与路径。</span></li>
+                    <li class="bi-split"><span class="bi-en">Translated macro policy into discussable questions to provide frontline perspective for <strong>Sino-UK financial cooperation</strong>.</span><span class="bi-zh">把宏观政策翻译成可讨论的命题，为<strong>中英金融合作</strong>提供一线视角。</span></li>
+                  </ul>
+                  <h4>Digital & Content / 数字与内容</h4>
+                  <ul>
+                    <li class="bi-split"><span class="bi-en">Contributed to content and structure optimization of the <strong>official website</strong>, improving institutional visibility.</span><span class="bi-zh">参与<strong>官方网站</strong>的内容与结构优化，让机构故事被更多人看见。</span></li>
+                    <li class="bi-split"><span class="bi-en">Regularly produced in-depth articles and briefs on <strong>Sino-UK policy and finance</strong>.</span><span class="bi-zh">定期输出<strong>中英政策与金融</strong>相关的深度稿件与专题梳理。</span></li>
+                  </ul>
+                  <h4>Event Planning · Flagship Project / 活动策划 · 旗舰项目</h4>
+                  <ul>
+                    <li class="bi-split"><span class="bi-en"><strong>Role:</strong> Participated end-to-end in planning and execution of the May 2026 <strong>Sino-UK Entrepreneurs Forum</strong>.</span><span class="bi-zh"><strong>角色：</strong>端到端参与 2026 年 5 月<strong>中英企业家论坛</strong>的策划与落地协作。</span></li>
+                    <li class="bi-split"><span class="bi-en"><strong>Highlights:</strong> Covered <strong>AI and tech investment</strong>, while coordinating with the <strong>City of London Corporation</strong> and senior officials from both governments to connect multi-party resources.</span><span class="bi-zh"><strong>亮点：</strong>议题覆盖 <strong>AI 与科技投资</strong>，并对接<strong>伦敦金融城（City of London Corporation）</strong>及中英政府高层，串联多方资源。</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="status">
+      <h2 class="section-title bounce-in">Current Status / 现状</h2>
+      <div class="status-panel bounce-in">
+        <div class="status-module">
+          <div class="status-module-head">
+            <h3 class="status-module-title">Graduate Studies / 深造计划<span class="title-en">Graduate Studies · The Transition</span></h3>
+            <div class="status-badges">
+              <span class="status-badge status-badge--confirmed">Confirmed</span>
+              <span class="status-badge">Destination: NYC</span>
+            </div>
+          </div>
+          <p class="status-text">After weighing the purely academic tracks of <strong class="status-kw">FinEcon</strong> and <strong class="status-kw">AppEcon</strong>, I decided to <strong class="status-kw">turn down other offers</strong> and pursue graduate study at <span class="status-proper">Columbia SIPA</span> (<span class="status-proper">School of International and Public Affairs</span>). Beyond pure number modeling, I want to explore the real logic of <strong class="status-kw">energy transition</strong> and <strong class="status-kw">project finance</strong> at the intersection of <strong class="status-kw">policy and finance</strong> in <strong class="status-kw">New York</strong>. / 在权衡了<strong class="status-kw">金融经济（FinEcon）</strong>与<strong class="status-kw">应用经济（AppEcon）</strong>的纯学术路径后，我最终决定<strong class="status-kw">放弃其他 Offer</strong>，选择前往<span class="status-proper">哥伦比亚大学 SIPA 学院</span>（<span class="status-proper">School of International and Public Affairs</span>）攻读研究生。相比于单纯的数字模型，我更期待在<strong class="status-kw">纽约</strong>这个全球<strong class="status-kw">政策与金融</strong>的交叉点，探索<strong class="status-kw">能源转型</strong>与<strong class="status-kw">项目融资（Project Finance）</strong>的真实脉络。</p>
+        </div>
+        <div class="status-module">
+          <div class="status-module-head">
+            <h3 class="status-module-title">Professional Practice / 实践中<span class="title-en">Professional Practice · The London–NYC Bridge</span></h3>
+            <div class="status-badges">
+              <span class="status-badge status-badge--active">Active</span>
+              <span class="status-badge">London &amp; Remote</span>
+            </div>
+          </div>
+          <p class="status-text">To sharpen high-frequency communication in a <strong class="status-kw">fully English professional environment</strong>, I'm currently serving as an <strong>Intern</strong> at London nonprofit <span class="status-proper--accent">The 48 Group Club</span>, deeply involved in <strong class="status-kw">policy research</strong> (including China's <strong class="status-kw">15th Five-Year Plan</strong>) and <strong class="status-kw">major international forum</strong> planning (e.g., the <strong class="status-kw">Sino-UK Entrepreneurs Forum</strong>). This rhythm of learning through action is my ideal pace. I'm also actively targeting <strong class="status-kw">Summer Intern opportunities</strong> and practice-oriented roles in the U.S. during study. / 为了在<strong class="status-kw">纯英文职业环境</strong>里磨炼高频沟通，我目前正作为 <strong>Intern</strong> 服务于伦敦的非盈利组织 <span class="status-proper--accent">The 48 Group Club</span>，深度参与<strong class="status-kw">政策研究</strong>（含中国<strong class="status-kw">「十五五」规划</strong>相关议题）与<strong class="status-kw">大型国际论坛</strong>策划（如 <strong class="status-kw">中英企业家论坛</strong>）。这种「一边实战、一边思考」的节奏，是我理想的状态。与此同时，我也在积极锁定<strong class="status-kw">夏季实习（Summer Intern）</strong>，以及入学后能在美国本土「边上课边实践」的机会。</p>
+        </div>
+        <div class="status-module">
+          <div class="status-module-head">
+            <h3 class="status-module-title">Career Exploration / 职业探索<span class="title-en">Career Exploration · The Strategy</span></h3>
+          </div>
+          <div class="status-pillars">
+            <div class="status-pillar">
+              <p class="status-pillar-label">Core Track / 核心赛道</p>
+              <p><strong class="status-kw">Energy &amp; Project Finance.</strong> Focused on <strong class="status-kw">renewable energy markets</strong>, <strong class="status-kw">infrastructure financing</strong>, and <strong class="status-kw">energy-transition policy analysis</strong>. / <strong class="status-kw">Energy &amp; Project Finance。</strong>专注于<strong class="status-kw">可再生能源市场</strong>、<strong class="status-kw">基础设施融资</strong>与<strong class="status-kw">能源转型政策分析</strong>。</p>
+            </div>
+            <div class="status-pillar">
+              <p class="status-pillar-label">Skill Stack / 技术栈建设</p>
+              <p class="bi-split"><span class="bi-en"><strong class="status-kw">Financial Modeling (Waterfall)</strong> + <strong class="status-kw">Python Data Science</strong>. Goal: pull data via <strong>API</strong> from sources such as <strong class="status-proper">IMF</strong> and <strong class="status-proper">World Bank</strong>, and build reusable <strong class="status-kw">macro charting</strong> and analysis workflows.</span><span class="bi-zh"><strong class="status-kw">Financial Modeling（Waterfall）</strong> + <strong class="status-kw">Python Data Science</strong>。目标是用 <strong>API</strong> 拉取 <strong class="status-proper">IMF</strong> 与 <strong class="status-proper">World Bank</strong> 等数据，完成可复用的<strong class="status-kw">宏观图表</strong>与分析流。</span></p>
+            </div>
+            <div class="status-pillar">
+              <p class="status-pillar-label">Target Ecosystem / 目标生态</p>
+              <p class="bi-split"><span class="bi-en">Targeting ecosystems around <strong class="status-kw">Wood Mackenzie</strong>, <strong class="status-kw">Bloomberg NEF</strong>, <strong class="status-kw">Guidehouse</strong>, and global organizations such as <strong class="status-kw">IMF</strong> and <strong class="status-kw">World Bank</strong>.</span><span class="bi-zh">锁定 <strong class="status-kw">Wood Mackenzie</strong>、<strong class="status-kw">Bloomberg NEF</strong>、<strong class="status-kw">Guidehouse</strong> 等专业咨询与研究机构，以及 <strong class="status-kw">IMF</strong> 与 <strong class="status-kw">World Bank</strong> 等<strong class="status-kw">国际组织</strong>生态。</span></p>
+            </div>
+          </div>
+        </div>
+        <p class="status-cta">No longer trying to "figure it out on the go" - instead, I'll spend two years <strong class="status-kw">all-in</strong> on every clear opportunity window. Current goals: <strong class="status-kw">validate interests</strong>, <strong class="status-kw">build skills</strong>, and <strong class="status-kw">connect with people</strong>. / 不再试图「边干边看」，而是用两年的时间 <strong class="status-kw">All-in</strong> 每一个确定的窗口。现阶段目标：<strong class="status-kw">验证兴趣</strong>，<strong class="status-kw">建立技能</strong>，<strong class="status-kw">连接人脉</strong>。</p>
+      </div>
+    </section>
+
+    <section id="frequency" style="position:relative;">
+      <span class="freq-float" style="top:10%;right:5%;">#Web3Newbie</span>
+      <span class="freq-float" style="top:30%;left:2%;">#FutureInFinance?</span>
+      <span class="freq-float" style="bottom:15%;right:8%;">#NetworkingIsHard</span>
+      <span class="freq-float" style="bottom:25%;left:5%;">#CoffeeAddict</span>
+      <h2 class="section-title bounce-in">Current Frequency / 正在发生的波段</h2>
+      <div class="frequency-wrap bounce-in">
+        <div class="freq-card harvest">
+          <h3>What I'm Learning / 正在吸收的</h3>
+          <p>Between political economy classes at KCL, I pushed myself to read Web3 whitepapers, understand AI fundamentals, and unpack the financial chain reactions behind global political news. I realized that in this era, a single skill tree is no longer enough. / 在 KCL 的政治经济课间隙，我强迫自己去啃 Web3 的白皮书，去理解 AI 的底层逻辑，去拆解每一条国际政治新闻背后的金融连锁反应。我意识到在这个时代，单一的技能树已经不够了。</p>
+          <p>The biggest takeaway turned out to be networking. I once thought it was purely utilitarian; now I see it as the fastest way to close information gaps and understand how the world actually runs. / 最重要的收获反而是 Networking。以前觉得它是「功利」的，现在发现它其实是打破信息差、去理解这个世界运行潜规则的最快方式。</p>
+          <div class="freq-tags"><span class="freq-tag">#Web3Newbie</span><span class="freq-tag">#NetworkingIsHard</span></div>
+        </div>
+        <div class="freq-card fog">
+          <h3>What's Still Blurry / 尚未清晰的</h3>
+          <div class="fog-body">
+            <p><strong>I admit it: I'm trapped in a kind of "greedy" anxiety.</strong> This era generously displays countless paths to success, creating the illusion that I can do everything. I habitually spot others' highlights and turn them into self-judgment: why haven't I mastered that skill? Why didn't I apply to that institution? I'm gentle to the outside world, yet harsh to myself like a strict examiner. / <strong>承认吧，我正陷入一种「贪婪」的焦虑中。</strong>这个时代慷慨地展示了无数条通往成功的路径，让我产生了一种「我无所不能」的错觉。我习惯于捕捉他人的闪光点，并将其转化成对自己的审判：为什么我没有掌握那个技能？为什么我没有投递那家机构？我对外界极尽温柔，对自己却刻薄得像个严官。</p>
+            <p>My anxiety is a contradictory engine. It pushes me to network intensely, find internships, try Python and waterfall modeling, and polish every task toward perfection. To some extent, this push helped me carry KCL's high-intensity academics and turn hard-core projects at Huatai and CITIC into concrete results. / 我的焦虑是个矛盾的引擎。它鞭策我去疯狂 Networking，去找实习，去尝试 Python 和 Waterfall 模型，去试图把每一份课题都做得尽善尽美。某种程度上，正是这种推力，让我一步步扛下了 KCL 的高强度学业，也把华泰和中信那些硬核项目做成了真正能落地的成果。</p>
+            <p>I know this anxiety isn't healthy, yet I rely on the urgency it creates; without this push, I fear stagnation. The deepest fatigue often comes from self-doubt labeled "not having done enough." Even when exhausted, a voice still says: you should do more, you could have done 100%. / 我深知这种焦虑不健康，却又依赖它带来的紧迫感；如果没有这份推力，我会害怕自己停滞不前。最深的疲惫，往往来自那层名为「未尽全力」的自我怀疑。即便已经筋疲力尽，潜意识里还是会有个声音在说：你应该做得更多，你明明可以做到百分之百。</p>
+            <p>Right now, I'm learning to coexist with this emotion. I'm learning to accept that opportunities are infinite, but human energy is finite. I'm also learning not to treat anxiety as my only fuel, and to rebuild confidence from completed, tangible results. / 现在的我，正在试着与这种情绪共处。学会接受「机会是无限的，但人的精力是有极限的」。我也在学习，不再把焦虑当成唯一动力，而是从那些已经完成、实打实的结果里，找回继续向前的底气。</p>
+          </div>
+          <div class="freq-tags"><span class="freq-tag">#GreedyAnxiety</span><span class="freq-tag">#SelfReconciliation</span></div>
+        </div>
+      </div>
+    </section>
+
+    </div>
+
+    <section id="photography">
+      <div class="photography-head">
+        <h2 class="section-title bounce-in" id="interestsTitle">Photography</h2>
+      </div>
+      <div class="film-strip-wrap envelope-in">
+        <div class="film-strip" id="filmStrip">
+          <div class="film-track" id="filmTrack">
+            <div class="film-card" data-src="imgs/8401772980425_.pic.jpg"><img src="imgs/8401772980425_.pic.jpg" alt="" /></div>
+            <div class="film-card" data-src="imgs/8431772980596_.pic.jpg"><img src="imgs/8431772980596_.pic.jpg" alt="" /></div>
+            <div class="film-card work-fragment" data-src="imgs/8451772980605_.pic.jpg"><img src="imgs/8451772980605_.pic.jpg" alt="" /><span class="work-caption">Between financial models and global headlines, photography is how I breathe. / 在财务模型和世界新闻的缝隙里，影像是我呼吸的方式。</span></div>
+            <div class="film-card" data-src="imgs/8461772980606_.pic.jpg"><img src="imgs/8461772980606_.pic.jpg" alt="" /></div>
+            <div class="film-card" data-src="imgs/8471772980608_.pic.jpg"><img src="imgs/8471772980608_.pic.jpg" alt="" /></div>
+            <div class="film-card" data-src="imgs/8401772980425_.pic.jpg"><img src="imgs/8401772980425_.pic.jpg" alt="" /></div>
+            <div class="film-card" data-src="imgs/8431772980596_.pic.jpg"><img src="imgs/8431772980596_.pic.jpg" alt="" /></div>
+            <div class="film-card work-fragment" data-src="imgs/8451772980605_.pic.jpg"><img src="imgs/8451772980605_.pic.jpg" alt="" /><span class="work-caption">Between financial models and global headlines, photography is how I breathe. / 在财务模型和世界新闻的缝隙里，影像是我呼吸的方式。</span></div>
+            <div class="film-card" data-src="imgs/8461772980606_.pic.jpg"><img src="imgs/8461772980606_.pic.jpg" alt="" /></div>
+            <div class="film-card" data-src="imgs/8471772980608_.pic.jpg"><img src="imgs/8471772980608_.pic.jpg" alt="" /></div>
+          </div>
+        </div>
+        <div class="film-quote">
+          <p class="line-en">Capturing light and shadow because time stands still for a second.</p>
+          <p>I love capturing light and shadow, because time pauses for a second when the shutter clicks. / 我喜欢捕捉光影，因为按下快门的瞬间，时间是静止的。</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+      <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close / 关闭">×</button>
+      <img src="" alt="" id="lightboxImg" />
+    </div>
+
+    <section id="contact">
+      <div class="contact-copy bounce-in">
+        <p class="contact-kicker">Connect / 建立连接</p>
+        <h2 class="contact-hello" id="friendsTitle">Hi, I'm Rosanna. You can also call me Roro. :)</h2>
+        <p class="contact-intro">Thank you for being here. I truly believe the most valuable asset in this era is sincere Coffee Chat between people. / 感谢你一来到这里。我始终相信，这个时代最宝贵的资产是人与人之间真诚的 Coffee Chat。</p>
+        <p class="contact-guide">If you find any common ground between us - whether it's striving in London/New York, interest in Energy & Project Finance, or that clear-eyed anxiety about the future - feel free to reach out through any channel below. No need for formality, let's just chat. / 如果你发现我们有任何共同点（无论是同样在伦敦/纽约奋斗，对 Energy &amp; Project Finance 的关注，或是那份对未来的「清醒焦虑」），欢迎随时通过下方的任何方式找到我。不必拘泥于形式，随便聊聊就好。</p>
+        <p class="contact-intro">My social media accounts are below - feel free to reach out anytime!!! / 以下有我的社交媒体账号，欢迎来找我！！！</p>
+      </div>
+    </section>
+
+    <footer class="footer" id="footer">
+      <p class="footer-msg">Thanks for visiting!</p>
+      <p class="footer-msg-zh">Thanks for visiting! / 感谢来访！</p>
+      <div class="social-inner">
+        <a href="https://www.instagram.com/rororo0315?igsh=MTcxNnZhYmk2MHAycg%3D%3D&utm_source=qr" target="_blank" rel="noopener" class="social-item" aria-label="Instagram" title="Click to visit Instagram / 点击跳转到 Instagram"><svg viewBox="0 0 24 24" stroke="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><span>Instagram</span></a>
+        <a href="https://xhslink.com/m/1YNlZuYj20q" target="_blank" rel="noopener" class="social-item" aria-label="Xiaohongshu / 小红书" title="Click to visit Xiaohongshu / 点击跳转到小红书"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>Xiaohongshu / 小红书</span></a>
+        <a href="https://v.douyin.com/hW2A1LuR1Bk/" target="_blank" rel="noopener" class="social-item" aria-label="Douyin / 抖音" title="Click to visit Douyin / 点击跳转到抖音"><svg viewBox="0 0 24 24" stroke="currentColor"><rect x="2" y="3" width="14" height="18" rx="3"/><path d="M18 9v6c0 1.1-.9 2-2 2h-2"/><path d="M10 8v8l5-4-5-4z"/></svg><span>Douyin / 抖音</span></a>
+        <a href="https://www.linkedin.com/in/yufei-he-rosanna" target="_blank" rel="noopener" class="social-item" aria-label="LinkedIn" title="点击跳转到 LinkedIn / Click to visit LinkedIn"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg><span>LinkedIn</span></a>
+      </div>
+    </footer>
+  </main>
+
+  <button type="button" class="pet-btn" id="petBtn" aria-label="Chat with Rosanna / 和 Rosanna 聊聊">
+    <span aria-hidden="true">🧚</span>
+    <span class="pet-btn-label">Chat with Rosanna / 和 Rosanna 聊聊～</span>
+  </button>
+
+  <div class="chat-backdrop" id="chatBackdrop"></div>
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-header">
+      <h2>Chat</h2>
+      <button type="button" class="chat-close" id="chatClose" aria-label="Close / 关闭">×</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg ai">
+        <div class="chat-msg-avatar">R</div>
+        <div class="chat-msg-bubble">Hi! I'm Rosanna's little digital sprite. Let's chat - ask me anything about photography, travel, or daily life ✨ / 嗨～ 我是 Rosanna 的数字小精灵，随便聊聊吧！可以问我关于摄影、旅行或日常的问题呀 ✨</div>
+      </div>
+    </div>
+    <div class="chat-input-wrap">
+      <div class="chat-input-bar">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Chat with Rosanna... / 和 Rosanna 聊聊..." autocomplete="off" />
+        <button type="button" class="chat-send" id="chatSend" aria-label="Send / 发送">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      /* Hero: vertical grid + falling letters */
+      (function initHeroRain() {
+        var grid = document.getElementById('heroGridBg');
+        var hero = document.querySelector('.hero-rain');
+        if (!grid || !hero) return;
+        var n = 28;
+        for (var i = 0; i < n; i++) {
+          var line = document.createElement('div');
+          line.className = 'hero-vline';
+          grid.appendChild(line);
+        }
+        function addLetters(rowEl, text, baseDelay) {
+          for (var i = 0; i < text.length; i++) {
+            var ch = text[i];
+            var cell = document.createElement('div');
+            cell.className = 'hero-cell';
+            var span = document.createElement('span');
+            span.className = 'hero-letter';
+            span.textContent = ch === ' ' ? '\u00A0' : ch;
+            var yOff = (Math.random() - 0.5) * 16;
+            var rotEnd = (Math.random() - 0.5) * 6;
+            var rotStart = (Math.random() - 0.5) * 20;
+            span.style.setProperty('--y-off', yOff + 'px');
+            span.style.setProperty('--rot-end', rotEnd + 'deg');
+            span.style.setProperty('--rot-start', rotStart + 'deg');
+            span.style.setProperty('--rot-mid', (Math.random() * 5 - 2.5) + 'deg');
+            span.style.setProperty('--bounce', (6 + Math.random() * 6) + 'px');
+            span.style.setProperty('--delay', (baseDelay + i * 0.075) + 's');
+            span.style.setProperty('--dur', (1.15 + Math.random() * 0.45) + 's');
+            cell.appendChild(span);
+            rowEl.appendChild(cell);
+          }
+        }
+        var row1 = document.getElementById('heroRow1');
+        var row2 = document.getElementById('heroRow2');
+        var row3 = document.getElementById('heroRow3');
+        if (row1) addLetters(row1, "I'm Rosanna", 0.35);
+        var gap2 = 0.35 + "I'm Rosanna".length * 0.075 + 0.55;
+        if (row2) addLetters(row2, 'always learning', gap2);
+        var gap3 = gap2 + 'always learning'.length * 0.075 + 0.55;
+        if (row3) addLetters(row3, '+ accountable', gap3);
+        hero.addEventListener('mousemove', function (e) {
+          var rect = hero.getBoundingClientRect();
+          var mx = (e.clientX - rect.left) / rect.width - 0.5;
+          var my = (e.clientY - rect.top) / rect.height - 0.5;
+          grid.style.transform = 'perspective(900px) rotateY(' + (mx * 5) + 'deg) rotateX(' + (-my * 3) + 'deg)';
+        });
+        hero.addEventListener('mouseleave', function () {
+          grid.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg)';
+        });
+      })();
+
+      /* Nav active state */
+      var navLinks = document.querySelectorAll('.nav-link');
+      function setActiveNav(id) {
+        navLinks.forEach(function (a) {
+          a.classList.toggle('active', a.getAttribute('data-nav') === id);
+        });
+      }
+      var sectionsForNav = [
+        { id: 'contact', nav: 'contact' },
+        { id: 'photography', nav: 'photography' },
+        { id: 'projects', nav: 'projects' },
+        { id: 'about', nav: 'about' }
+      ];
+      function onScrollNav() {
+        var y = window.scrollY + 120;
+        var current = null;
+        for (var i = sectionsForNav.length - 1; i >= 0; i--) {
+          var el = document.getElementById(sectionsForNav[i].id);
+          if (el && el.offsetTop <= y) {
+            current = sectionsForNav[i].nav;
+            break;
+          }
+        }
+        if (window.scrollY < 80) current = null;
+        navLinks.forEach(function (a) {
+          a.classList.toggle('active', a.getAttribute('data-nav') === current);
+        });
+      }
+      window.addEventListener('scroll', onScrollNav, { passive: true });
+      onScrollNav();
+
+      /* About column reveal */
+      document.querySelectorAll('.about-left-inner.reveal, .about-right.reveal').forEach(function (el) {
+        var o = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) e.target.classList.add('visible');
+          });
+        }, { threshold: 0.12 });
+        o.observe(el);
+      });
+
+      // Bounce-in on scroll
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add('visible');
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.bounce-in').forEach(el => observer.observe(el));
+
+      // Timeline accordion（跳过 2026 专属卡片，其用「Read More / 阅读更多」展开）
+      document.querySelectorAll('.timeline-item:not(.timeline-item--2026)').forEach(item => {
+        var head = item.querySelector('.timeline-head');
+        if (!head) return;
+        head.addEventListener('click', function () {
+          item.classList.toggle('open');
+        });
+      });
+      (function initTimeline2026() {
+        var btn = document.getElementById('timeline2026More');
+        var detail = document.getElementById('timeline2026Detail');
+        if (!btn || !detail) return;
+        btn.addEventListener('click', function () {
+          var open = !detail.classList.contains('is-open');
+          detail.classList.toggle('is-open', open);
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          btn.textContent = open ? 'Collapse / 收起' : 'Read More / 阅读更多';
+        });
+      })();
+
+      // Split bilingual copy into EN-left / ZH-right for selected content boxes
+      (function initBilingualSplit() {
+        var targets = document.querySelectorAll([
+          '#timeline .line-zh',
+          '#timeline .detail-lead',
+          '#timeline .timeline-2026-detail-content li',
+          '#status .status-text',
+          '#status .status-pillar p:not(.status-pillar-label)',
+          '#status .status-cta',
+          '#frequency .freq-card p'
+        ].join(','));
+
+        function hasChinese(text) {
+          return /[一-鿿]/.test(text);
+        }
+
+        function splitIndex(raw) {
+          var i = raw.lastIndexOf(' / ');
+          while (i !== -1) {
+            var left = raw.slice(0, i).trim();
+            var right = raw.slice(i + 3).trim();
+            if (left && right && hasChinese(right)) return i;
+            i = raw.lastIndexOf(' / ', i - 1);
+          }
+          return -1;
+        }
+
+        targets.forEach(function (el) {
+          if (el.classList.contains('bi-split')) return;
+          var html = el.innerHTML;
+          var idx = splitIndex(html);
+          if (idx === -1) return;
+          var en = html.slice(0, idx).trim();
+          var zh = html.slice(idx + 3).trim();
+          if (!en || !zh) return;
+          el.classList.add('bi-split');
+          el.innerHTML = '<span class="bi-en">' + en + '</span><span class="bi-zh">' + zh + '</span>';
+        });
+      })();
+
+      /* CV: 打开时挂到 body，避免任意祖先 transform/sticky 导致 fixed 错位；关闭时归位 */
+      (function initCvAccordion() {
+        var wrap = document.getElementById('cvAccordionWrap');
+        var toggleBtn = document.getElementById('cvToggle');
+        var panel = document.getElementById('cvPanelBlock');
+        if (!wrap || !toggleBtn || !panel) return;
+        var anchorParent = wrap.parentNode;
+        var anchorNext = wrap.nextSibling;
+
+        function setScrollLock(on) {
+          document.documentElement.classList.toggle('cv-open', on);
+          document.body.classList.toggle('cv-open', on);
+        }
+
+        function restoreCvToAbout() {
+          setScrollLock(false);
+          panel.setAttribute('hidden', '');
+          if (anchorParent && wrap.parentNode === document.body) {
+            anchorParent.insertBefore(wrap, anchorNext);
+          }
+        }
+
+        toggleBtn.addEventListener('click', function () {
+          var expanded = wrap.classList.toggle('expanded');
+          toggleBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+          if (expanded) {
+            anchorParent = wrap.parentNode;
+            anchorNext = wrap.nextSibling;
+            document.body.appendChild(wrap);
+            setScrollLock(true);
+            panel.removeAttribute('hidden');
+          } else {
+            restoreCvToAbout();
+          }
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key !== 'Escape' || !wrap.classList.contains('expanded')) return;
+          wrap.classList.remove('expanded');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          restoreCvToAbout();
+        });
+
+        document.querySelectorAll('[data-cv-section]').forEach(function (item) {
+          var head = item.querySelector('.cv-acc-head');
+          if (!head) return;
+          head.addEventListener('click', function () {
+            var open = item.classList.toggle('open');
+            head.setAttribute('aria-expanded', open ? 'true' : 'false');
+          });
+        });
+      })();
+
+      // Envelope-in for interests section
+      const envelopeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add('visible');
+        });
+      }, { threshold: 0.2, rootMargin: '0px 0px -50px 0px' });
+      document.querySelectorAll('.envelope-in').forEach(el => envelopeObserver.observe(el));
+
+      // Lightbox: 点击照片全屏预览
+      var lightbox = document.getElementById('lightbox');
+      var lightboxImg = document.getElementById('lightboxImg');
+      var lightboxClose = document.getElementById('lightboxClose');
+      document.querySelectorAll('.film-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+          var src = this.getAttribute('data-src');
+          if (src) {
+            lightboxImg.src = src;
+            lightbox.classList.add('open');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      });
+      function closeLightbox() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+      });
+
+      // Chat
+      const petBtn = document.getElementById('petBtn');
+      const chatBackdrop = document.getElementById('chatBackdrop');
+      const chatPanel = document.getElementById('chatPanel');
+      const chatClose = document.getElementById('chatClose');
+      const chatMessages = document.getElementById('chatMessages');
+      const chatInput = document.getElementById('chatInput');
+      const chatSend = document.getElementById('chatSend');
+
+      function openChat() {
+        chatBackdrop.classList.add('open');
+        chatPanel.classList.add('open');
+        chatInput.focus();
+      }
+      function closeChat() {
+        chatBackdrop.classList.remove('open');
+        chatPanel.classList.remove('open');
+      }
+      petBtn.addEventListener('click', openChat);
+      chatClose.addEventListener('click', closeChat);
+      chatBackdrop.addEventListener('click', closeChat);
+
+      function toggleSendReady() {
+        chatSend.classList.toggle('ready', chatInput.value.trim().length > 0);
+      }
+      chatInput.addEventListener('input', toggleSendReady);
+      chatInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      function appendMessage(html, isUser) {
+        const wrap = document.createElement('div');
+        wrap.className = 'chat-msg ' + (isUser ? 'user' : 'ai');
+        wrap.innerHTML = html;
+        chatMessages.appendChild(wrap);
+        chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
+      }
+
+      function showThinking() {
+        const wrap = document.createElement('div');
+        wrap.className = 'chat-msg ai';
+        wrap.id = 'thinkingWrap';
+        wrap.innerHTML = '<div class="chat-msg-avatar">R</div><div class="chat-thinking"><span></span><span></span><span></span></div>';
+        chatMessages.appendChild(wrap);
+        chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
+      }
+      function hideThinking() {
+        const el = document.getElementById('thinkingWrap');
+        if (el) el.remove();
+      }
+
+      function streamReply(text, onDone) {
+        hideThinking();
+        const wrap = document.createElement('div');
+        wrap.className = 'chat-msg ai';
+        wrap.innerHTML = '<div class="chat-msg-avatar">R</div><div class="chat-msg-bubble"><span class="stream-text"></span><span class="stream-cursor"></span></div>';
+        chatMessages.appendChild(wrap);
+        const streamEl = wrap.querySelector('.stream-text');
+        let i = 0;
+        function step() {
+          if (i < text.length) {
+            streamEl.textContent += text[i++];
+            chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
+            setTimeout(step, 28);
+          } else {
+            var cur = wrap.querySelector('.stream-cursor');
+            if (cur) cur.remove();
+            if (onDone) onDone();
+          }
+        }
+        step();
+      }
+
+      function sendMessage() {
+        var raw = chatInput.value.trim();
+        if (!raw) return;
+        chatInput.value = '';
+        toggleSendReady();
+        appendMessage('<div class="chat-msg-avatar"></div><div class="chat-msg-bubble">' + escapeHtml(raw) + '</div>', true);
+        showThinking();
+        setTimeout(function () {
+          var replies = [
+            "Thanks for your message! I'm Rosanna's little sprite and I'm still getting smarter - soon I'll chat with you even better ✨ / 谢谢你的消息～ 我是 Rosanna 的小精灵，还在慢慢变聪明中，很快就能更好地陪你聊天啦 ✨",
+            "Rosanna loves photography and travel - if you do too, feel free to explore her homepage more / Rosanna 喜欢拍照和旅行，如果你也喜欢，可以多来看看她的主页呀～",
+            "We can talk about anything - photography, travel, or daily life / 有什么想聊的都可以说！摄影、旅行、日常小事都行～",
+            "Got it! You can also check her Instagram or Xiaohongshu for more life snippets 🍃 / 收到啦！有空可以看看她的 Instagram 或小红书，有更多生活碎片 🍃",
+            "Your message has been passed to Rosanna - she'll be happy to see it / 嘿嘿，你的消息已经传到 Rosanna 那边啦，她看到会开心的～"
+          ];
+          var reply = replies[Math.floor(Math.random() * replies.length)];
+          streamReply(reply);
+        }, 600 + Math.random() * 500);
+      }
+      chatSend.addEventListener('click', sendMessage);
+
+      function escapeHtml(s) {
+        var div = document.createElement('div');
+        div.textContent = s;
+        return div.innerHTML;
+      }
+    })();
+  </script>
+</body>
+</html>
